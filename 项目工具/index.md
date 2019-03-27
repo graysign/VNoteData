@@ -71,3 +71,9 @@
 
 **url链接**
 * [MM图](http://www.mmjpg.com/mm/)
+
+**数据库建模工具**
+* [pdman](https://gitee.com/robergroup/pdman)
+
+**IDE**
+* [spacevim](https://spacevim.org/cn/quick-start-guide/)
