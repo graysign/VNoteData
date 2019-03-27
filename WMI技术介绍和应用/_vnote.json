@@ -1,0 +1,80 @@
+{
+    "created_time": "2018-03-19T02:19:20Z",
+    "files": [
+    ],
+    "sub_directories": [
+        {
+            "name": "WMI概述"
+        },
+        {
+            "name": "VC开发WMI应用的基本步骤"
+        },
+        {
+            "name": "VC编写一个半同步查询WMI服务的类"
+        },
+        {
+            "name": "查询正在运行的进程信息"
+        },
+        {
+            "name": "查询正在运行的线程信息"
+        },
+        {
+            "name": "查询桌面信息"
+        },
+        {
+            "name": "查询环境变量"
+        },
+        {
+            "name": "查询驱动信息"
+        },
+        {
+            "name": "查询文件夹信息"
+        },
+        {
+            "name": "查询磁盘分区和逻辑磁盘信息"
+        },
+        {
+            "name": "询快捷方式和映射磁盘和虚拟内存信息"
+        },
+        {
+            "name": "查询系统信息"
+        },
+        {
+            "name": "查询系统信息和补丁包信息"
+        },
+        {
+            "name": "查询时间信息"
+        },
+        {
+            "name": "查询系统服务"
+        },
+        {
+            "name": "查询本地用户和组"
+        },
+        {
+            "name": "查询硬件信息"
+        },
+        {
+            "name": "接收事件"
+        },
+        {
+            "name": "执行方法"
+        },
+        {
+            "name": "事件通知"
+        },
+        {
+            "name": "Instance和MethodProvider"
+        },
+        {
+            "name": "EventProvider"
+        },
+        {
+            "name": "EventConsumerProvider"
+        },
+        {
+            "name": "利用WMI打造完美三无后门(scrcons.exe)"
+        }
+    ],
+    "version": "1"
+}
