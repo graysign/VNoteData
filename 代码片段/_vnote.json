@@ -170,6 +170,16 @@
             "name": "WindowsAPI-GetGlyphOutline函数.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-05T01:53:13Z",
+            "modified_time": "2019-04-05T01:53:13Z",
+            "name": "VS+VAssistX自动添加注释.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
