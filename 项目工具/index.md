@@ -77,3 +77,13 @@
 
 **IDE**
 * [spacevim](https://spacevim.org/cn/quick-start-guide/)
+
+**运维**
+* [MobaXterm](https://mobaxterm.mobatek.net/download.html)  
+* [ansible](https://docs.ansible.com/)  
+
+**原型**
+* [axure rp](https://baike.baidu.com/item/axure%20rp/9653646?fr=aladdin)  
+
+**网络状况模拟**
+* [clumsy](https://www.softpedia.com/get/Network-Tools/Network-Testing/clumsy.shtml)
