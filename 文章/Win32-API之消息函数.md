@@ -1,0 +1,13 @@
+|          名称          |                      描述                       |
+| ---------------------- | ---------------------------------------------- |
+| BroadcastSystemMessage | 将一条系统消息广播给系统中所有的顶级窗口            |
+| GetMessagePos          | 取得消息队列中上一条消息处理完毕时的鼠标指针屏幕位置 |
+| GetMessageTime         | 取得消息队列中上一条消息处理完毕时的时间            |
+| PostMessage            | 将一条消息投递到指定窗口的消息队列                 |
+| PostThreadMessage      | 将一条消息投递给应用程序                          |
+| RegisterWindowMessage  | 获取分配给一个字串标识符的消息编号                 |
+| ReplyMessage           | 答复一个消息                                     |
+| SendMessage            | 调用一个窗口的窗口函数，将一条消息发给那个窗口      |
+| SendMessageCallback    | 将一条消息发给窗口                               |
+| SendMessageTimeout     | 向窗口发送一条消息                               |
+| SendNotifyMessage      | 向窗口发送一条消息                               |

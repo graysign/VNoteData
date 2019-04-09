@@ -1,0 +1,16 @@
+|         名称          |                          描述                          |
+| --------------------- | ------------------------------------------------------ |
+| WNetAddConnection     | 创建同一个网络资源的永久性连接                            |
+| WNetAddConnection2    | 创建同一个网络资源的连接                                 |
+| WNetAddConnection3    | 创建同一个网络资源的连接                                 |
+| WNetCancelConnection  | 结束一个网络连接                                         |
+| WNetCancelConnection2 | 结束一个网络连接                                         |
+| WNetCloseEnum         | 结束一次枚举操作                                         |
+| WNetConnectionDialog  | 启动一个标准对话框，以便建立同网络资源的连接                |
+| WNetDisconnectDialog  | 启动一个标准对话框，以便断开同网络资源的连接                |
+| WNetEnumResource      | 枚举网络资源                                            |
+| WNetGetConnection     | 获取本地或已连接的一个资源的网络名称                       |
+| WNetGetLastError      | 获取网络错误的扩展错误信息                                |
+| WNetGetUniversalName  | 获取网络中一个文件的远程名称以及/或者UNC（统一命名规范）名称 |
+| WNetGetUser           | 获取一个网络资源用以连接的名字                            |
+| WNetOpenEnum          | 启动对网络资源进行枚举的过程                              |
