@@ -23,6 +23,7 @@
 **持续集成环境**
 *  [Jenkins](https://jenkins.io/)
 *  [codepub](https://github.com/bzppx/bzppx-codepub)
+*  [Teamcity](https://www.jetbrains.com/teamcity/)    [示例](https://www.cnblogs.com/sparkdev/p/5988583.html)  
 
 **构建脚本**
 * [Ant](http://ant.apache.org/)
