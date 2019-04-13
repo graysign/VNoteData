@@ -11,8 +11,9 @@
 ```c
 unsigned long HashString(char *lpszFileName, unsigned long dwHashType)
 { 
-     unsigned char *key = (unsigned char *)lpszFileName;
-    unsigned long seed1 = 0x7FED7FED, seed2 = 0xEEEEEEEE;
+    unsigned char *key  = (unsigned char *)lpszFileName;
+    unsigned long seed1 = 0x7FED7FED;
+    unsigned long seed2 = 0xEEEEEEEE;
     int ch;
     while(*key != 0)
     { 
@@ -31,11 +32,15 @@ Blizzard的这个算法是非常高效的，被称为"One-Way Hash"（所谓One-
 ```c
 int GetHashTablePos(char *lpszString, SOMESTRUCTURE *lpTable, int nTableSize)
 { 
-     int nHash = HashString(lpszString), nHashPos = nHash % nTableSize;
+    int nHash     = HashString(lpszString);
+    int nHashPos  = nHash % nTableSize;
     if (lpTable[nHashPos].bExists && !strcmp(lpTable[nHashPos].pString, lpszString)) 
-      return nHashPos; 
-    else 
-      return -1; //Error value 
+    {
+      //return nHashPos; 
+    }else{
+      nHashPos    = -1; //Error value 
+    }
+    return nHashPos;
 } 
 ```
 
@@ -50,22 +55,25 @@ int GetHashTablePos(char *lpszString, SOMESTRUCTURE *lpTable, int nTableSize)
 ```c
 int GetHashTablePos(char *lpszString, MPQHASHTABLE *lpTable, int nTableSize)
 { 
- const int HASH_OFFSET = 0, HASH_A = 1, HASH_B = 2;
-int nHash = HashString(lpszString, HASH_OFFSET);
-int nHashA = HashString(lpszString, HASH_A);
-int nHashB = HashString(lpszString, HASH_B);
-int nHashStart = nHash % nTableSize, nHashPos = nHashStart;
-while (lpTable[nHashPos].bExists)
-{ //比较的是Table中存储的另外两个Hash函数的值，Table中不存储字符串
-  if (lpTable[nHashPos].nHashA == nHashA && lpTable[nHashPos].nHashB == nHashB) 
-   return nHashPos; 
-  else  //冲突处理
-   nHashPos = (nHashPos + 1) % nTableSize;
-  
-  if (nHashPos == nHashStart) 
-   break; 
- }
-return -1; //Error value 
+    const int HASH_OFFSET = 0, HASH_A = 1, HASH_B = 2;
+    int nHash     = HashString(lpszString, HASH_OFFSET);
+    int nHashA    = HashString(lpszString, HASH_A);
+    int nHashB    = HashString(lpszString, HASH_B);
+    int nHashStart= nHash % nTableSize, nHashPos = nHashStart;
+    
+    while (lpTable[nHashPos].bExists)
+    { //比较的是Table中存储的另外两个Hash函数的值，Table中不存储字符串
+      if (lpTable[nHashPos].nHashA == nHashA && lpTable[nHashPos].nHashB == nHashB){
+       return nHashPos; 
+      }else{  //冲突处理
+       nHashPos = (nHashPos + 1) % nTableSize;
+      }
+      
+      if (nHashPos == nHashStart){
+       break; 
+      }
+    }
+    return -1; //Error value 
 } 
 ```
 
