@@ -24,6 +24,10 @@
 *  [Jenkins](https://jenkins.io/)
 *  [codepub](https://github.com/bzppx/bzppx-codepub)
 *  [Teamcity](https://www.jetbrains.com/teamcity/)    [示例](https://www.cnblogs.com/sparkdev/p/5988583.html)  
+*  [Travis CI](http://travis-ci.org/)
+*  [Bamboo](http://www.atlassian.com/software/bamboo)
+*  [Hudson](http://hudson-ci.org/)
+*  [QuickBuild](http://www.pmease.com/)
 
 **构建脚本**
 * [Ant](http://ant.apache.org/)
