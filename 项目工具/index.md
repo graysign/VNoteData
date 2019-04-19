@@ -74,9 +74,6 @@
 **在线IDE**  
 * [jupyter notebook](http://jupyter.org/install)
 
-**url链接**
-* [MM图](http://www.mmjpg.com/mm/)
-
 **数据库建模工具**
 * [pdman](https://gitee.com/robergroup/pdman)
 
