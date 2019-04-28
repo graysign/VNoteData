@@ -390,6 +390,56 @@
             "name": "Linux-进程管理程序Supervisor.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-28T03:37:20Z",
+            "modified_time": "2019-04-28T03:48:42Z",
+            "name": "持续集成-Jenkins环境搭建.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-28T03:50:53Z",
+            "modified_time": "2019-04-28T04:05:45Z",
+            "name": "持续集成-Jenkins实现php项目的自动化测试和自动打包和自动部署.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-28T04:10:15Z",
+            "modified_time": "2019-04-28T04:23:04Z",
+            "name": "持续集成-Jenkins和Ansible自动化部署Nginx.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-28T06:32:36Z",
+            "modified_time": "2019-04-28T06:45:23Z",
+            "name": "持续集成-jenkins结合svn和ansible和shell和mysql版本迁移实现多服务器批量发布.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-28T06:47:59Z",
+            "modified_time": "2019-04-28T06:56:43Z",
+            "name": "数据库-Mysql迁移工具在生产环境下的使用.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
