@@ -48,4 +48,78 @@ gcc -g -O0 mem_leak.c -o mem_leak
 ![](_v_images/_1521459511_24253.png)  
 &emsp;&emsp;有时候，待分析的程序会启动子程序。如果我们希望分析子程序，则需要增加--trace-children=yes。比如我们使用time启动上面的程序  
 ![](_v_images/_1521459526_26735.png)  
-&emsp;&emsp; 可以看出，valgrind分析出作为父程序的time是没有问题的，但是作为子程序的mem_leak有两个错误。
+&emsp;&emsp; 可以看出，valgrind分析出作为父程序的time是没有问题的，但是作为子程序的mem_leak有两个错误。  
+
+
+
+下载地址:http://valgrind.org/downloads/current.html#current  
+
+安装过程：（可以直接查看README文档来确认安装过程）  
+
+```console
+tools/valgrind-3.12.0> pwd
+/proj/MPS_DEV_REPO/xchonxu/tools
+> tar -jxf valgrind-3.12.0.tar.bz2
+> cd /proj/MPS_DEV_REPO/xchonxu/tools/valgrind-3.12.0
+> vim README
+> ls
+> ./autogen.sh
+> ./configure --prefix=/home/xchonxu/bin
+> make
+> make install
+
+#验证是否成功：
+> cd ~
+> ls
+> cd bin/
+> ls
+> cd bin/
+> ls
+> ./valgrind ls -l
+> ./valgrind --leak-check=full ls -l
+```
+
+Valgrind 命令介绍：  
+
+```console
+#用法: valgrind [options] prog-and-args 
+[options]: 常用选项，适用于所有Valgrind工具
+
+    -tool=<name> 最常用的选项。运行 valgrind中名为toolname的工具。默认memcheck。
+
+        memcheck ------> 这是valgrind应用最广泛的工具，一个重量级的内存检查器，能够发现开发中绝大多数内存错误使用情况，比如：使用未初始化的内存，使用已经释放了的内存，内存访问越界等。
+        callgrind ------> 它主要用来检查程序中函数调用过程中出现的问题。
+        cachegrind ------> 它主要用来检查程序中缓存使用出现的问题。
+        helgrind ------> 它主要用来检查多线程程序中出现的竞争问题。
+        massif ------> 它主要用来检查程序中堆栈使用中出现的问题。
+        extension ------> 可以利用core提供的功能，自己编写特定的内存调试工具
+
+    -h –help 显示帮助信息。
+    -version 显示valgrind内核的版本，每个工具都有各自的版本。
+    -q –quiet 安静地运行，只打印错误信息。
+    -v –verbose 更详细的信息, 增加错误数统计。
+    -trace-children=no|yes 跟踪子线程? [no]
+    -track-fds=no|yes 跟踪打开的文件描述？[no]
+    -time-stamp=no|yes 增加时间戳到LOG信息? [no]
+    -log-fd=<number> 输出LOG到描述符文件 [2=stderr]
+    -log-file=<file> 将输出的信息写入到filename.PID的文件里，PID是运行程序的进行ID
+    -log-file-exactly=<file> 输出LOG信息到 file
+    -log-file-qualifier=<VAR> 取得环境变量的值来做为输出信息的文件名。 [none]
+    -log-socket=ipaddr:port 输出LOG到socket ，ipaddr:port
+
+#LOG信息输出
+    -xml=yes 将信息以xml格式输出，只有memcheck可用
+    -num-callers=<number> show <number> callers in stack traces [12]
+    -error-limit=no|yes 如果太多错误，则停止显示新错误? [yes]
+    -error-exitcode=<number> 如果发现错误则返回错误代码 [0=disable]
+    -db-attach=no|yes 当出现错误，valgrind会自动启动调试器gdb。[no]
+    -db-command=<command> 启动调试器的命令行选项[gdb -nw %f %p]
+
+#适用于Memcheck工具的相关选项：
+    -leak-check=no|summary|full 要求对leak给出详细信息? [summary]
+    -leak-resolution=low|med|high how much bt merging in leak check [low]
+    -show-reachable=no|yes show reachable blocks in leak check? [no]
+
+#最常用的命令格式：
+valgrind --tool=memcheck --leak-check=full ./test
+```
