@@ -251,3 +251,180 @@ with tf.Session() as sess:
 ```
 
 以上就是文字识别的入门实战内容：验证码图片文本识别。通过本次的学习，可了解简单的文本识别的实现方式。  
+
+##### 完整代码  
+
+```python
+import numpy as np
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from captcha.image import ImageCaptcha
+import random
+import os
+
+# 生成验证码的字符集
+CHAR_SET = ['0','1','2','3','4','5','6','7','8','9']
+CHAR_SET_LEN = len(CHAR_SET)
+
+# 验证码长度
+CAPTCHA_LEN = 4
+
+# 生成验证码图片
+def gen_captcha_image():
+    for i in range(CHAR_SET_LEN):
+        for j in range(CHAR_SET_LEN):
+            for k in range(CHAR_SET_LEN):
+                for l in range(CHAR_SET_LEN):
+                    captcha_text = CHAR_SET[i] + CHAR_SET[j] + CHAR_SET[k] + CHAR_SET[l]
+                    image = ImageCaptcha()
+                    image.write(captcha_text, '/tmp/mydata/' + captcha_text + '.jpg')
+
+# 图像大小
+IMAGE_HEIGHT = 60
+IMAGE_WIDTH = 160
+
+# 验证码文本信息one-hot编码
+def text2label(text):
+    label = np.zeros(CAPTCHA_LEN * CHAR_SET_LEN)
+    for i in range(len(text)):
+        idx = i * CHAR_SET_LEN + CHAR_SET.index(text[i])
+        label[idx] = 1
+    return label
+
+# 获取验证码图片路径及文本内容
+def get_image_file_name(img_path):
+    img_files = []
+    img_labels = []
+    for root, dirs, files in os.walk(img_path):
+        for file in files:
+            if os.path.splitext(file)[1] == '.jpg':
+                img_files.append(root+'/'+file)
+                img_labels.append(text2label(os.path.splitext(file)[0]))
+    return img_files,img_labels
+
+# 批量获取数据
+def get_next_batch(img_files,img_labels,batch_size):
+    batch_x = np.zeros([batch_size, IMAGE_WIDTH*IMAGE_HEIGHT])
+    batch_y = np.zeros([batch_size, CAPTCHA_LEN * CHAR_SET_LEN])
+    for i in range(batch_size):
+        idx = random.randint(0, len(img_files) - 1)
+        file_path = img_files[idx]
+        image = cv2.imread(file_path)
+        image = cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT))
+        image = image.astype(np.float32)
+        image = np.multiply(image, 1.0 / 255.0)
+        batch_x[i, :] = image
+        batch_y[i, :] = img_labels[idx]
+
+    return batch_x,batch_y
+
+# 网络相关变量
+X = tf.placeholder(tf.float32, [None, IMAGE_HEIGHT * IMAGE_WIDTH])
+Y = tf.placeholder(tf.float32, [None, CAPTCHA_LEN * CHAR_SET_LEN])
+keep_prob = tf.placeholder(tf.float32)  # dropout
+
+# 验证码 CNN 网络
+def crack_captcha_cnn_network(w_alpha=0.01, b_alpha=0.1):
+    x = tf.reshape(X, shape=[-1, IMAGE_HEIGHT, IMAGE_WIDTH, 1])
+
+    w_c1 = tf.Variable(w_alpha * tf.random_normal([3, 3, 1, 32]))
+    b_c1 = tf.Variable(b_alpha * tf.random_normal([32]))
+    conv1 = tf.nn.relu(tf.nn.bias_add(tf.nn.conv2d(x, w_c1, strides=[1, 1, 1, 1], padding='SAME'), b_c1))
+    conv1 = tf.nn.max_pool(conv1, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+    conv1 = tf.nn.dropout(conv1, keep_prob)
+
+    w_c2 = tf.Variable(w_alpha * tf.random_normal([3, 3, 32, 64]))
+    b_c2 = tf.Variable(b_alpha * tf.random_normal([64]))
+    conv2 = tf.nn.relu(tf.nn.bias_add(tf.nn.conv2d(conv1, w_c2, strides=[1, 1, 1, 1], padding='SAME'), b_c2))
+    conv2 = tf.nn.max_pool(conv2, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+    conv2 = tf.nn.dropout(conv2, keep_prob)
+
+    w_c3 = tf.Variable(w_alpha * tf.random_normal([3, 3, 64, 64]))
+    b_c3 = tf.Variable(b_alpha * tf.random_normal([64]))
+    conv3 = tf.nn.relu(tf.nn.bias_add(tf.nn.conv2d(conv2, w_c3, strides=[1, 1, 1, 1], padding='SAME'), b_c3))
+    conv3 = tf.nn.max_pool(conv3, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+    conv3 = tf.nn.dropout(conv3, keep_prob)
+
+    w_d = tf.Variable(w_alpha * tf.random_normal([8 * 20 * 64, 1024]))
+    b_d = tf.Variable(b_alpha * tf.random_normal([1024]))
+    dense = tf.reshape(conv3, [-1, w_d.get_shape().as_list()[0]])
+    dense = tf.nn.relu(tf.add(tf.matmul(dense, w_d), b_d))
+    dense = tf.nn.dropout(dense, keep_prob)
+
+    w_out = tf.Variable(w_alpha * tf.random_normal([1024, CAPTCHA_LEN * CHAR_SET_LEN]))
+    b_out = tf.Variable(b_alpha * tf.random_normal([CAPTCHA_LEN * CHAR_SET_LEN]))
+    out = tf.add(tf.matmul(dense, w_out), b_out)
+    return out
+
+# 训练模型
+def train_crack_captcha_cnn():
+    # 模型的相关参数
+    step_cnt = 200000  # 迭代轮数
+    batch_size = 16  # 批量获取样本数量
+    learning_rate = 0.0001  # 学习率
+
+    # 读取验证码图片集
+    img_path = '/tmp/mydata/'
+    img_files, img_labels = get_image_file_name(img_path)
+
+    # 划分出训练集、测试集
+    x_train,x_test,y_train,y_test=train_test_split(img_files,img_labels,test_size=0.2,random_state=33)
+
+    # 加载网络结构
+    output = crack_captcha_cnn_network()
+
+    # 损失函数、优化器
+    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=output, labels=Y))
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
+
+    # 评估准确率
+    predict = tf.reshape(output, [-1, CAPTCHA_LEN, CHAR_SET_LEN])
+    max_idx_p = tf.argmax(predict, 2)
+    max_idx_l = tf.argmax(tf.reshape(Y, [-1, CAPTCHA_LEN, CHAR_SET_LEN]), 2)
+    correct_pred = tf.equal(max_idx_p, max_idx_l)
+    accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        saver = tf.train.Saver(tf.global_variables(), max_to_keep=5)
+
+        for step in range(step_cnt):
+            batch_x, batch_y = get_next_batch(x_train, y_train,batch_size)
+            _, loss_ = sess.run([optimizer, loss], feed_dict={X: batch_x, Y: batch_y, keep_prob: 0.75})
+            print('step:',step, 'loss:',loss_)
+
+            # 每100步评估一次准确率
+            if step % 100 == 0:
+                batch_x_test, batch_y_test = get_next_batch(x_test, y_test,batch_size)
+                acc = sess.run(accuracy, feed_dict={X: batch_x_test, Y: batch_y_test, keep_prob: 1.})
+                print('step:',step,'acc:',acc)
+                # 保存模型
+                saver.save(sess, '/tmp/mymodel/crack_captcha.ctpk', global_step=step)
+                
+            step += 1
+# 模型预测
+
+def predict_captcha(captcha_image):
+    # 加载网络结构
+    output = crack_captcha_cnn_network()
+
+    saver = tf.train.Saver()
+
+    with tf.Session() as sess:
+        model_path = '/tmp/mymodel/'
+        saver.restore(sess, tf.train.latest_checkpoint(model_path))
+        output_rate=tf.reshape(output, [-1, CAPTCHA_LEN, CHAR_SET_LEN])
+        predict = tf.argmax(output_rate, 2)
+        text_list,rate_list = sess.run([predict,output_rate], feed_dict={X: [captcha_image], keep_prob: 1})
+
+        tmptext = text_list[0].tolist()
+        text=''
+        for i in range(len(tmptext)):
+            text = text + CHAR_SET[tmptext[i]]
+
+        print('识别结果：',text)
+
+
+
+        return text
+```
