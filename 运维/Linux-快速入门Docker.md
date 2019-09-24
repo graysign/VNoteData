@@ -110,7 +110,8 @@
     Docker 提供了非常丰富的命令。所谓一图胜千言，我们可以从下面的图片了解到很多信息和它们之前的用途。（可以直接跳过阅读，建议收藏，便于扩展阅读）  
     ![16a02cdbf14142a0?w=1024&h=768&f=png&s=140360](_v_images/20190410102001519_32017.png)  
     如果希望获取更多信息，可以阅读官方使用文档。  
-    ```bash
+   
+```console
 Command	                    Description
     docker attach	         Attach local standard input, output, and error streams to a running container
     docker build	         Build an image from a Dockerfile
@@ -171,7 +172,7 @@ Command	                    Description
     docker volume	        Manage volumes
     docker wait	        Block until one or more containers stop, then print their exit codes
     官方阅读链接：https://docs.docker.com/engine/reference/commandline/docker/
-    ```  
+```  
     
 5. ###### 进阶：仓库与软件安装的简化  
     还记得笔者在文章开头介绍的「镜像、容器和仓库」吗？Docker 的仓库用于存放镜像。我们可以从中心仓库下载镜像，也可以从自建仓库下载。同时，我们可以把制作好的镜像从本地推送到远程仓库。  
