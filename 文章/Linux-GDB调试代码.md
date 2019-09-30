@@ -479,7 +479,7 @@ bt full -n
 默认情况下core文件存在应用当前路径下，为了区分可以进行设置。  
 区分core主要通过`/proc/sys/kernel/core_uses_pid`和`/proc/sys/kernel/core_pattern`进行设置。  
 `/proc/sys/kernel/core_uses_pid`：可以控制产生的core文件的文件名中是否添加pid作为扩展，如果添加则文件内容为1，否则为0。  
-`proc/sys/kernel/core_pattern`：可以设置格式化的core文件保存位置或文件名，比如原来文件内容是`core-%e`  
+`/proc/sys/kernel/core_pattern`：可以设置格式化的core文件保存位置或文件名，比如原来文件内容是`core-%e`  
 `echo "/tmp/core-%e-%p" > core_pattern`将会控制所产生的core文件会存放到/corefile目录下，产生的文件名为`core-命令名-pid-时间戳`  
 ```console
 #以下是参数列表:
