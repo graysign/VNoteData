@@ -86,7 +86,7 @@ BER 编码包含以下部分:
 
 下面我们学习一下上述三种编码方法:  
 
-##### 1.Primitive, definte-length encoding  
+##### 1.Primitive, definite-length encoding  
 基本数据类型除字符串类型外均使用这种编码方式. 这种情况下我们的数据编码结果会是以下形式:  
 ![](_v_images/20191030161458663_30050.png)  
 其中不包含 End-of-contents 部分, 因为这里我们使用定长编码.  
@@ -102,7 +102,7 @@ BER 编码包含以下部分:
 * Long form: 这种形式下, Length 占用的字节长度为 2-127 个字节. 第一个字节的 bit8 为 1, 其余字节用于表示紧接着有多少个字节用来编码长度. 高字节在前.  
 
 
-##### 2. Contructed, definite-length encoding  
+##### 2. Constructed, definite-length encoding  
 
 这种编码方法用于编码复杂类型和简单类型中的字符串类型且**编码长度已知**.编码形式与 Primitive, definte-length encoding 类似. 除了 Identifier 字段的第一个字节的 bit6 为 1, 用来表示是复杂类型.  
 
