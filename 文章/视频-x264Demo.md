@@ -8,7 +8,11 @@ x264编译需要使用到yasm，到http://www.tortall.net/projects/yasm/releases
 # ./configure;make;make install
 ```
 
-x264官方下载：http://www.videolan.org/developers/x264.html。下载压缩包名为：last_x264.tar.bz2。解压得到的文件名为x264-snapshot-xxxx。编译命令如下：  
+x264官方下载：http://www.videolan.org/developers/x264.html。  
+
+` git clone https://code.videolan.org/videolan/x264.git`  
+
+下载压缩包名为：last_x264.tar.bz2。解压得到的文件名为x264-snapshot-xxxx。编译命令如下：  
 
 ```console
 $ ./configure  --prefix=/home/latelee/bin/x264 --enable-static
