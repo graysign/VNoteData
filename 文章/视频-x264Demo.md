@@ -68,7 +68,7 @@ int x264_encode(const char* infile, int width, int height, int type, const char*
         return -1;
     }
  
-    x264_param_default(¶m);
+    x264_param_default(&param);
  
     param.i_width  = width;
     param.i_height = height;
@@ -95,7 +95,7 @@ int x264_encode(const char* infile, int width, int height, int type, const char*
     param.b_annexb = 1;
  
     // profile: high x264_profile_names定义见x264.h
-    x264_param_apply_profile(¶m, x264_profile_names[2]);
+    x264_param_apply_profile(&param, x264_profile_names[2]);
  
     pic_in = (x264_picture_t*)malloc(sizeof(x264_picture_t));
     if (pic_in == NULL)
@@ -110,7 +110,7 @@ int x264_encode(const char* infile, int width, int height, int type, const char*
     x264_picture_init(pic_out);
     x264_picture_alloc(pic_in, csp, param.i_width, param.i_height);
  
-    handle = x264_encoder_open(¶m);
+    handle = x264_encoder_open(&param);
  
     // 计算有多少帧
     luma_size = param.i_width * param.i_height;
