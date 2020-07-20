@@ -44,6 +44,43 @@ void  LOG(const char *format, ...)
 ```
 
 
+
+```c++
+#include <stdio.h>
+#include <stdarg.h>
+#include <time.h>
+
+#define LOGFORMAT(type,  format, args...)   LOG(type, __FILE__, __LINE__, __FUNCTION__, format, ##args)
+#define DEBUGLOG(format, args...)           LOGFORMAT("DEBUG", format, ##args)
+#define ERRORLOG(format, args...)           LOGFORMAT("ERROR", format, ##args)
+
+void  LOG(const char *type, const char* file, int line, const char* fun, const char *format, ...)
+{
+	va_list argp;
+	char buf[1024]  = {0}; 
+	 
+	va_start(argp, format); 
+	vsnprintf(buf, sizeof(buf), format, argp); 
+	va_end(argp);
+
+    time_t now;     
+    struct tm  *timenow;
+    time(&now); 
+    timenow = localtime(&now); 
+    printf("%04d-%02d-%02d %02d:%02d:%02d  %s %s:%d(%s): %s", 
+        timenow->tm_year + 1900, timenow->tm_mon + 1, timenow->tm_mday,timenow->tm_hour, timenow->tm_min, timenow->tm_sec,
+        type,file,  line, fun,
+        buf); 
+}
+
+
+int main(int argc, char** argv)
+{
+    DEBUGLOG("test \n");
+    ERRORLOG("test \n");
+}
+```
+
 # 二. 打印16进制数据
 
 ```c
