@@ -710,6 +710,16 @@
             "name": "linux-串口阻塞与非阻塞参数设置.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2020-08-04T07:18:54Z",
+            "modified_time": "2020-08-04T07:22:38Z",
+            "name": "算法-二进制指数退避算法.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
