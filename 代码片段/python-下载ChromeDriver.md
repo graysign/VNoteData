@@ -1,6 +1,7 @@
 ```python
 #!/usr/bin/python
 #coding=utf-8
+#http://npm.taobao.org/mirrors/chromedriver/
 import urllib
 import os
 
