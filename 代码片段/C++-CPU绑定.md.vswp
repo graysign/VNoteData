@@ -1,3 +1,4 @@
+vnote_backup_file_826537664 F:/VNoteData/代码片段/C++-CPU绑定.md
 # Linux  
 cpu亲和性（affinity）用于绑定到固定的CPU上。主要有以下函数。  
 
