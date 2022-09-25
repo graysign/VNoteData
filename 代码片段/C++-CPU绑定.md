@@ -167,7 +167,96 @@ main(int argc, char *argv[])
 
 
 
+```c++
+//#define _GNU_SOURCE
+#include <sched.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <map>
+#include <algorithm>
+#include <pthread.h>
 
+//nOperatorFlg  1 alloc, 0 release
+bool BindCodecToCpuCompareFunction(const std::pair<int, int> left,const std::pair<int,int> right)
+{
+	return left.second < right.second;
+}
+static bool BindCodecToCpu(int nOperatorFlg,pthread_t pid, int& nReleaseBindCpuIndex)
+{
+	static int 					nCpus 		= sysconf(_SC_NPROCESSORS_ONLN);
+	static std::map<int,int>	mapBindCpuData;
+	static pthread_mutex_t 		mtx;
+	bool ret = false;
+	switch(nOperatorFlg)
+	{
+		case 0:
+			{
+				pthread_mutex_lock(&mtx);
+				std::map<int,int>::iterator it = mapBindCpuData.find(nReleaseBindCpuIndex);
+				if(it!=mapBindCpuData.end()){
+					mapBindCpuData[nReleaseBindCpuIndex] = mapBindCpuData[nReleaseBindCpuIndex]--;
+				}
+				ret = true;
+				pthread_mutex_unlock(&mtx);
+			}
+			break;
+		case 1:
+			{
+				pthread_mutex_lock(&mtx);
+				std::map<int,int>::iterator it= std::min_element(mapBindCpuData.begin(),mapBindCpuData.end(),BindCodecToCpuCompareFunction);
+				nReleaseBindCpuIndex = it->first;
+				cpu_set_t mask;
+				CPU_ZERO(&mask);
+				CPU_SET(nReleaseBindCpuIndex, &mask); 
+				if(pthread_setaffinity_np(pid, sizeof(mask), &mask) < 0)
+					ret = false;
+				else 
+					ret = true;
+				if(ret)
+					mapBindCpuData[nReleaseBindCpuIndex] = mapBindCpuData[nReleaseBindCpuIndex]++;
+				pthread_mutex_unlock(&mtx);
+			}
+			break;
+		case 3:
+			{
+				for(int i = 0 ; i < nCpus; i++){
+					mapBindCpuData[i] = 0;
+				}
+				pthread_mutex_init(&mtx, NULL);
+				printf("cpu cout[%d] \n", nCpus);
+			}
+			break;
+		default:
+			printf("opeartor not defined \n");
+			break;
+	}
+	for(int i = 0 ;i < 8 ;i++)
+		printf("[%d][%d] ",i, mapBindCpuData[i]);
+	printf("\n");
+	return ret;
+}
+
+int main(int argc, char **argv)
+{
+	
+   for(int i= 0 ; i < 16 ; i++){
+	   int nReleaseBindCpuIndex = -1;
+	   bool ret  = BindCodecToCpu(1, pthread_self(), nReleaseBindCpuIndex);
+	   //printf("\n alloc i[%d]  bind[%d] ret[%d]\n\n", i, nReleaseBindCpuIndex, ret);
+   }
+
+   for(int i= 0 ; i < 16 ; i++){
+	   int nReleaseBindCpuIndex = i;
+	   bool ret  = BindCodecToCpu(0, pthread_self(), nReleaseBindCpuIndex);
+	   //printf("\n release i[%d]  bind[%d] ret[%d]\n\n", i, nReleaseBindCpuIndex, ret);
+   }
+       
+    return 0;
+}
+```
 
 # Windows  
 
